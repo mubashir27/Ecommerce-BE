@@ -1,8 +1,8 @@
 const express = require("express");
 const connectDB = require("./config/dbConfig");
-const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 const dotenv = require("dotenv").config();
+const { notFound, errorHandler } = require("./middlewares/errorHandler");
 connectDB();
 const port = process.env.PORT || 5000;
 app.use(express.json());
