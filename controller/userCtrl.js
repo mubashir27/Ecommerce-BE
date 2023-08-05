@@ -54,4 +54,43 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createUser, loginUser, getAllUsers, getUser };
+// delete a users
+const deleteUser = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteUser = await User.findByIdAndDelete(id);
+    res.json({
+      message: "User Deleted Sucessfully",
+      success: true,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// update a users
+const updateUser = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstname, lastname, email, mobile } = req?.body;
+    const updateUser = await User.findByIdAndUpdate(
+      id,
+      { ...req?.body },
+      {
+        new: true,
+      }
+    );
+    res.json(updateUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+module.exports = {
+  createUser,
+  loginUser,
+  getAllUsers,
+  getUser,
+  deleteUser,
+  updateUser,
+};
