@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 // routes
 app.use("/api/user", require("./routes/authRoutes"));
+app.use("/api/product", require("./routes/productRoute"));
 
 app.use(notFound);
 app.use(errorHandler);
