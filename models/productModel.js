@@ -24,14 +24,17 @@ var productSchema = new mongoose.Schema(
     },
     category: {
       type: String, // objectId of mongoDB but for RN its String
-      ref: "Category",
+      // ref: "Category",
+      required: true,
     },
     brand: {
       type: String,
-      enum: ["Apple", "Samsung", "Lenevo"],
+      // enum: ["Apple", "Samsung", "Lenevo"],
+      required: true,
     },
     quantity: {
       type: Number,
+      // required: true,
       required: true,
     },
     images: {
@@ -39,7 +42,8 @@ var productSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      enum: ["Black", "Brown", "Red"],
+      // enum: ["Black", "Brown", "Red"],
+      required: true,
     },
     ratings: [
       {

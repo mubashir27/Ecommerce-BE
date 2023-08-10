@@ -4,8 +4,10 @@ const app = express();
 const dotenv = require("dotenv").config();
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
 connectDB();
 const port = process.env.PORT || 5000;
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 // routes
