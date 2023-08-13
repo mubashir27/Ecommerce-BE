@@ -4,6 +4,7 @@ const { generateToken } = require("../config/jwtToken");
 const validMongoDbId = require("../utils/validMongoDbId");
 const { generateRefreshToken } = require("../config/refreshToken");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("./emailCtrl");
 
 // register a user
 const createUser = asyncHandler(async (req, res) => {
@@ -42,7 +43,7 @@ const loginUser = asyncHandler(async (req, res) => {
       token: generateToken(findUser?._id),
     });
   } else {
-    throw new Error("Invalid crediantials");
+    throw new Error("Invalid credentials");
   }
 });
 // get all users
@@ -74,7 +75,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     validMongoDbId(id);
     const deleteUser = await User.findByIdAndDelete(id);
     res.json({
-      message: "User Deleted Sucessfully",
+      message: "User Deleted Successfully",
       success: true,
     });
   } catch (error) {
@@ -174,14 +175,54 @@ const logout = asyncHandler(async (req, res) => {
       httpOnly: true,
       secure: true,
     });
-    return res.sendStatus(204); // frobidden
+    return res.sendStatus(204); // forbidden
   }
   await User.findByIdAndUpdate(refreshToken, { refreshToken: "" });
   req.clearCookie("refreshToken", {
     httpOnly: true,
     secure: true,
   });
-  res.sendStatus(204); // frobidden
+  res.sendStatus(204); // forbidden
+});
+
+// update password
+const updatePassword = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { password } = req.body;
+  validMongoDbId(_id);
+  const user = await User.findById(_id);
+  if (password) {
+    user.password = password;
+    const updatedPassword = await user.save();
+    console.log("iff", updatedPassword);
+    res.json(updatedPassword);
+  } else {
+    res.json(user);
+  }
+});
+
+const forgetPasswordToken = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("User not found with this email");
+  }
+  try {
+    const token = await user.createPasswordResetToken();
+    await user.save();
+    // console.log("iff");
+    const resetUrl = `Hi, Please follow this link to reset your password this link is valid till 10 minutes from now. <a href='http://localhost:5002/api/user/reset-password/${token}'>Click Here</a>`;
+    const data = {
+      html: resetUrl,
+      to: email,
+      text: "Hey user",
+      subject: "Forgot Password Link",
+    };
+    sendEmail(data);
+    res.json(token);
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 module.exports = {
@@ -195,4 +236,6 @@ module.exports = {
   unBlockUser,
   handleRefreshToken,
   logout,
+  updatePassword,
+  forgetPasswordToken,
 };
