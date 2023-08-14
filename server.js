@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use("/api/user", require("./routes/authRoutes"));
 app.use("/api/product", require("./routes/productRoute"));
 app.use("/api/blog", require("./routes/blogRoutes"));
+app.use("/api/category", require("./routes/categoryRoute"));
 
 app.use(notFound);
 app.use(errorHandler);
