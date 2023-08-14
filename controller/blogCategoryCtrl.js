@@ -2,63 +2,67 @@ const BlogCategory = require("../models/blogCategoryModel");
 const asyncHandler = require("express-async-handler");
 const validMongoDbId = require("../utils/validMongoDbId");
 
-const createCategory = asyncHandler(async (req, res) => {
+const createBlogCategory = asyncHandler(async (req, res) => {
   try {
-    const createCategory = await BlogCategory.create(req.body);
-    res.json(createCategory);
+    const createBlogCategory = await BlogCategory.create(req.body);
+    res.json(createBlogCategory);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const updateCategory = asyncHandler(async (req, res) => {
+const updateBlogCategory = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     validMongoDbId(id);
-    const updateCategory = await BlogCategory.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.json(updateCategory);
+    const updateBlogCategory = await BlogCategory.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.json(updateBlogCategory);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const deletedCategory = asyncHandler(async (req, res) => {
+const deletedBlogCategory = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     validMongoDbId(id);
-    const deleteCategory = await BlogCategory.findByIdAndDelete(id);
-    res.json(deleteCategory);
+    const deleteBlogCategory = await BlogCategory.findByIdAndDelete(id);
+    res.json(deleteBlogCategory);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const getCategory = asyncHandler(async (req, res) => {
+const getBlogCategory = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     validMongoDbId(id);
-    const getCategory = await BlogCategory.findById(id);
-    res.json(getCategory);
+    const getBlogCategory = await BlogCategory.findById(id);
+    res.json(getBlogCategory);
   } catch (error) {
     throw new Error(error);
   }
 });
 
-const getAllCategory = asyncHandler(async (req, res) => {
+const getAllBlogCategory = asyncHandler(async (req, res) => {
   try {
-    const getAllCategory = await BlogCategory.find();
-    res.json(getAllCategory);
+    const getAllBlogCategory = await BlogCategory.find();
+    res.json(getAllBlogCategory);
   } catch (error) {
     throw new Error(error);
   }
 });
 
 module.exports = {
-  createCategory,
-  updateCategory,
-  deletedCategory,
-  getCategory,
-  getAllCategory,
+  createBlogCategory,
+  updateBlogCategory,
+  deletedBlogCategory,
+  getBlogCategory,
+  getAllBlogCategory,
 };
