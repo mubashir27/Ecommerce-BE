@@ -17,6 +17,7 @@ app.use("/api/blog", require("./routes/blogRoutes"));
 app.use("/api/category", require("./routes/categoryRoute"));
 app.use("/api/blog-category", require("./routes/blogCategoryRoute"));
 app.use("/api/brand", require("./routes/brandRoute"));
+app.use("/api/coupon", require("./routes/couponRoute"));
 
 app.use(notFound);
 app.use(errorHandler);
